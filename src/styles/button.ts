@@ -68,7 +68,7 @@ export const buttonStyles = css`
     height: 36px;
     background: var(--primary-color, #03a9f4);
     color: white;
-    box-shadow: 0 0 0 1px rgba(3, 169, 244, 0.1), 0 0 8px 2px rgba(3, 169, 244, 0.3);
+    box-shadow: 0 0 0 1px var(--primary-color, #03a9f4), 0 0 8px 2px var(--primary-color, #03a9f4);
   }
   
   .feed-btn::before {
@@ -76,7 +76,7 @@ export const buttonStyles = css`
   }
   
   .feed-btn:hover {
-    box-shadow: 0 0 0 1px rgba(3, 169, 244, 0.15), 0 0 12px 3px rgba(3, 169, 244, 0.4);
+    box-shadow: 0 0 0 1px var(--primary-color, #03a9f4), 0 0 12px 3px var(--primary-color, #03a9f4);
   }
   
   .feed-btn:active {
