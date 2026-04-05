@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 📖 使用文档
+    url: https://github.com/ningjx/petkit-feeder-card#readme
+    about: 查看使用文档和配置说明
+  - name: 🔗 后端集成
+    url: https://github.com/ningjx/Home-Petkit
+    about: 后端集成仓库（必须先安装）

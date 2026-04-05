@@ -1,0 +1,86 @@
+name: 🐛 Bug 报告
+description: 报告一个 Bug
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        感谢你花时间填写这个 Bug 报告！
+
+  - type: textarea
+    id: description
+    attributes:
+      label: 问题描述
+      description: 清晰描述你遇到的问题
+      placeholder: "例如：卡片显示空白..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: 复现步骤
+      description: 描述如何复现这个问题
+      placeholder: |
+        1. 添加卡片...
+        2. 配置...
+        3. 看到...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: 期望行为
+      description: 描述你期望发生什么
+    validations:
+      required: true
+
+  - type: textarea
+    id: config
+    attributes:
+      label: 卡片配置
+      description: 粘贴你的卡片 YAML 配置（注意隐藏敏感信息）
+      render: yaml
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: 浏览器控制台日志
+      description: |
+        按 F12 打开开发者工具，查看 Console 标签页中的错误信息。
+      render: shell
+
+  - type: input
+    id: version
+    attributes:
+      label: 卡片版本
+      placeholder: "例如: v0.3.1"
+    validations:
+      required: true
+
+  - type: input
+    id: ha_version
+    attributes:
+      label: Home Assistant 版本
+      placeholder: "例如: 2024.1.0"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: device
+    attributes:
+      label: 设备型号
+      options:
+        - Fresh Element Solo (D4)
+        - Fresh Element (D3)
+        - Fresh Element Duo (D4s)
+        - Feeder Mini (Mini)
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: 其他信息
+      description: 任何其他有助于解决问题的信息
