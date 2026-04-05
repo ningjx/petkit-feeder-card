@@ -1,47 +1,24 @@
-# Petkit Feeder Card
+# PetKit 喂食器 Lovelace 卡片
 
-小佩喂食器 Lovelace 卡片
+[![hacs_badge](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://github.com/hacs/integration)
+
+[English](README_EN.md) | 简体中文
+
+专为 PetKit 智能喂食器设计的 Home Assistant Lovelace 卡片。
+
+> ⚠️ **重要提示**：本卡片必须配合 [PetKit 喂食器集成](https://github.com/ningjx/Home-Petkit) 使用，请先安装后端集成。
+
+## 卡片预览
+
+![卡片预览](card.png)
 
 ## 功能
 
-- 今日喂食时间线 - 计划和记录合并展示
-- 计划编辑 - 点击时间/名称/克数直接编辑
-- 新增计划 - 点击添加，编辑后自动保存
-- 删除计划 - 点击删除按钮，乐观更新
-- 状态切换 - 开关按钮启用/禁用计划
-- 今日统计 - 计划/实际/手动喂食量
-- 手动喂食 - 快捷出粮按钮
-
-## 安装
-
-### HACS
-
-搜索 "Petkit Feeder Card" 安装
-
-### 手动
-
-1. 下载 `dist/petkit-feeder-card.js`
-2. 放到 `/config/www/`
-3. 添加资源 `/local/petkit-feeder-card.js`
-
-## 配置
-
-```yaml
-type: custom:petkit-feeder-card
-device_id: "276669"
-```
-
-| 选项 | 类型 | 必需 | 默认 | 说明 |
-|------|------|------|------|------|
-| `device_id` | string | 是* | - | 设备ID |
-| `entity` | string | 否 | 自动推断 | 喂食计划传感器 |
-| `history_entity` | string | 否 | 自动推断 | 历史记录传感器 |
-| `name` | string | 否 | 设备名 | 卡片标题 |
-| `show_timeline` | bool | 否 | true | 显示时间线 |
-| `show_summary` | bool | 否 | true | 显示统计 |
-| `show_actions` | bool | 否 | true | 显示操作按钮 |
-
-*`device_id` 和 `entity` 二选一必填
+- **喂食计划管理** - 可视化管理一周喂食计划，支持新增、编辑、删除
+- **喂食历史记录** - 追踪每次喂食详情，显示计划喂食量与实际进食量
+- **手动喂食** - 一键出粮，快速补充喂食
+- **状态监控** - 实时显示设备在线状态、WiFi 信号、干燥剂状态
+- **周视图切换** - 快速切换查看不同日期的喂食计划
 
 ## 界面
 
@@ -79,19 +56,65 @@ device_id: "276669"
 | ESC | 取消编辑 |
 | 点击虚线框 | 新增计划 |
 
-## 乐观更新
+## 前置要求
 
-操作立即生效，无需等待后台响应：
+1. 已安装 Home Assistant（2024.1.0 或更高版本）
+2. 已安装 [PetKit 喂食器集成](https://github.com/ningjx/Home-Petkit)
+3. 已配置好 PetKit 喂食器设备
 
-- 新增计划立即显示，失焦后保存
-- 删除计划立即消失，失败则恢复
-- 切换状态立即更新，失败则恢复
+## 安装
 
-## 要求
+### HACS 安装（推荐）
 
-- Home Assistant 2024.1+
-- petkit_feeder 集成已配置
-- 传感器实体有正确的属性
+1. HACS → 前端 → 探索并下载仓库
+2. 搜索 "Petkit Feeder Card"
+3. 点击下载
+4. 在仪表盘中添加卡片
+
+### 手动安装
+
+1. 下载 `dist/petkit-feeder-card.js`
+2. 复制到 Home Assistant 的 `www` 目录
+3. 在 Lovelace 配置中添加资源引用：
+   ```yaml
+   resources:
+     - url: /local/petkit-feeder-card.js
+       type: module
+   ```
+
+## 配置
+
+```yaml
+type: custom:petkit-feeder-card
+device_id: "YOUR_DEVICE_ID"
+```
+
+### 配置选项
+
+| 参数 | 类型 | 必需 | 默认 | 说明 |
+|------|------|------|------|------|
+| `device_id` | string | 是* | - | 设备 ID |
+| `entity` | string | 否 | 自动推断 | 喂食计划传感器 |
+| `history_entity` | string | 否 | 自动推断 | 历史记录传感器 |
+| `name` | string | 否 | 设备名 | 卡片标题 |
+| `show_timeline` | bool | 否 | true | 显示时间线 |
+| `show_summary` | bool | 否 | true | 显示统计 |
+| `show_actions` | bool | 否 | true | 显示操作按钮 |
+
+*`device_id` 和 `entity` 二选一必填
+
+## 支持设备
+
+| 设备 | 型号 |
+|------|------|
+| Fresh Element Solo | D4 |
+| Fresh Element | D3 |
+| Fresh Element Duo | D4s |
+| Feeder Mini | Mini |
+
+## 相关项目
+
+- [PetKit 喂食器集成](https://github.com/ningjx/Home-Petkit) - 后端集成
 
 ## 开发
 
@@ -99,6 +122,11 @@ device_id: "276669"
 npm install
 npm run build
 ```
+
+## 注意
+
+- 本项目非小佩官方产品
+- API 可能随时变更
 
 ## 许可证
 
