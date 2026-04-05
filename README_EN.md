@@ -55,6 +55,8 @@ type: custom:petkit-feeder-card
 device_id: "YOUR_DEVICE_ID"
 ```
 
+> 💡 **Tip**: The `device_id` can be found in the "Device ID" sensor of your PetKit device in Home Assistant.
+
 ### Configuration Options
 
 | Parameter | Required | Description |
@@ -63,12 +65,12 @@ device_id: "YOUR_DEVICE_ID"
 
 ## Supported Devices
 
-| Device | Model |
-|--------|-------|
-| Fresh Element Solo | D4 |
-| Fresh Element | D3 |
-| Fresh Element Duo | D4s |
-| Feeder Mini | Mini |
+| Device | Model | Status |
+|--------|-------|--------|
+| Fresh Element Solo | D4 | ✅ Supported |
+| Fresh Element | D3 | 🚧 Not Supported |
+| Fresh Element Duo | D4s | 🚧 Not Supported |
+| Feeder Mini | Mini | 🚧 Not Supported |
 
 ## Related Projects
 
