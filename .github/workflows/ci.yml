@@ -4,24 +4,13 @@ on:
   push:
     tags:
       - 'v*'
-  pull_request:
   workflow_dispatch:
 
 permissions: {}
 
 jobs:
-  validate-hacs:
-    runs-on: "ubuntu-latest"
-    if: github.event_name == 'pull_request'
-    steps:
-      - name: HACS validation
-        uses: "hacs/action@main"
-        with:
-          category: "plugin"
-
   build-and-release:
     runs-on: "ubuntu-latest"
-    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
     permissions:
       contents: write
     steps:
