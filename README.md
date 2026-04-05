@@ -6,7 +6,7 @@
 
 专为 PetKit 智能喂食器设计的 Home Assistant Lovelace 卡片。
 
-> ⚠️ **重要提示**：本卡片必须配合 [PetKit 喂食器集成](https://github.com/ningjx/Home-Petkit) 使用，请先安装后端集成。
+> ⚠️ **重要提示**：本卡片必须配合 [PetKit 喂食器集成](https://github.com/ningjx/petkit-feeder) 使用，请先安装后端集成。
 
 ## 卡片预览
 
@@ -36,7 +36,7 @@
 ## 前置要求
 
 1. 已安装 Home Assistant（2024.1.0 或更高版本）
-2. 已安装 [PetKit 喂食器集成](https://github.com/ningjx/Home-Petkit)
+2. 已安装 [PetKit 喂食器集成](https://github.com/ningjx/petkit-feeder)
 3. 已配置好 PetKit 喂食器设备
 
 ## 安装
@@ -94,7 +94,7 @@ device_id: "YOUR_DEVICE_ID"
 
 ## 相关项目
 
-- [PetKit 喂食器集成](https://github.com/ningjx/Home-Petkit) - 后端集成
+- [PetKit 喂食器集成](https://github.com/ningjx/petkit-feeder) - 后端集成
 
 ## 开发
 

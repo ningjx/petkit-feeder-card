@@ -6,7 +6,7 @@ English | [简体中文](README.md)
 
 A Home Assistant Lovelace card designed for PetKit smart feeders.
 
-> ⚠️ **Important**: This card requires the [PetKit Feeder Integration](https://github.com/ningjx/Home-Petkit) to be installed first.
+> ⚠️ **Important**: This card requires the [PetKit Feeder Integration](https://github.com/ningjx/petkit-feeder) to be installed first.
 
 ## Preview
 
@@ -36,7 +36,7 @@ A Home Assistant Lovelace card designed for PetKit smart feeders.
 ## Prerequisites
 
 1. Home Assistant (2024.1.0 or higher)
-2. [PetKit Feeder Integration](https://github.com/ningjx/Home-Petkit) installed
+2. [PetKit Feeder Integration](https://github.com/ningjx/petkit-feeder) installed
 3. PetKit feeder device configured
 
 ## Installation
@@ -94,7 +94,7 @@ device_id: "YOUR_DEVICE_ID"
 
 ## Related Projects
 
-- [PetKit Feeder Integration](https://github.com/ningjx/Home-Petkit) - Backend integration
+- [PetKit Feeder Integration](https://github.com/ningjx/petkit-feeder) - Backend integration
 
 ## Development
 
