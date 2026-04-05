@@ -42,17 +42,12 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Create zip
-        run: |
-          cd dist
-          zip ../petkit-feeder-card.zip petkit-feeder-card.js
-          cd ..
+      - name: Prepare release
+        run: cp dist/petkit-feeder-card.js .
 
       - name: Release
         uses: softprops/action-gh-release@v2
         with:
-          files: |
-            dist/petkit-feeder-card.js
-            petkit-feeder-card.zip
+          files: petkit-feeder-card.js
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
