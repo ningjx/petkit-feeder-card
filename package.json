@@ -1,6 +1,6 @@
 {
   "name": "petkit-feeder-card",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "小佩喂食器 Lovelace 卡片",
   "main": "dist/petkit-feeder-card.js",
   "scripts": {

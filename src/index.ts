@@ -7,8 +7,12 @@
   name: '小佩喂食器',
   description: '显示小佩喂食器状态、喂食计划和历史记录',
   preview: true,
-  documentationURL: 'https://github.com/ning/petkit-ha',
+  documentationURL: 'https://github.com/ningjx/petkit-feeder-card',
 });
+
+// 导入组件（确保执行装饰器和自定义元素注册）
+import './petkit-feeder-card';
+import './editor';
 
 // 导出组件
 export { PetkitFeederCard } from './petkit-feeder-card';

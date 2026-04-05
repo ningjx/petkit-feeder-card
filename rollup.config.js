@@ -3,7 +3,7 @@ import typescript from '@rollup/plugin-typescript';
 import terser from '@rollup/plugin-terser';
 
 export default {
-  input: 'src/petkit-feeder-card.ts',
+  input: 'src/index.ts',
   output: {
     file: 'dist/petkit-feeder-card.js',
     format: 'esm',
