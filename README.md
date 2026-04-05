@@ -22,16 +22,16 @@
 
 ## 交互
 
-| 操作 | 效果 |
-|------|------|
-| 点击时间 | 编辑时间 |
-| 点击名称 | 编辑名称 |
-| 点击克数 | 编辑出粮量 |
-| 点击开关 | 启用/禁用计划 |
-| 点击删除 | 删除计划 |
-| 失焦 | 自动保存 |
-| ESC | 取消编辑 |
-| 点击虚线框 | 新增计划 |
+| 操作         | 效果           |
+|--------------|----------------|
+| 点击时间     | 编辑时间       |
+| 点击名称     | 编辑名称       |
+| 点击克数     | 编辑出粮量     |
+| 点击开关     | 启用/禁用计划  |
+| 点击删除     | 删除计划       |
+| 失焦         | 自动保存       |
+| ESC          | 取消编辑       |
+| 点击虚线框   | 新增计划       |
 
 ## 前置要求
 
@@ -53,6 +53,7 @@
 1. 下载 `dist/petkit-feeder-card.js`
 2. 复制到 Home Assistant 的 `www` 目录
 3. 在 Lovelace 配置中添加资源引用：
+
    ```yaml
    resources:
      - url: /local/petkit-feeder-card.js
@@ -70,26 +71,26 @@ device_id: "YOUR_DEVICE_ID"
 
 ### 配置选项
 
-| 参数 | 类型 | 必需 | 默认 | 说明 |
-|------|------|------|------|------|
-| `device_id` | string | 是* | - | 设备 ID |
-| `entity` | string | 否 | 自动推断 | 喂食计划传感器 |
-| `history_entity` | string | 否 | 自动推断 | 历史记录传感器 |
-| `name` | string | 否 | 设备名 | 卡片标题 |
-| `show_timeline` | bool | 否 | true | 显示时间线 |
-| `show_summary` | bool | 否 | true | 显示统计 |
-| `show_actions` | bool | 否 | true | 显示操作按钮 |
+| 参数             | 类型    | 必需 | 默认     | 说明               |
+|------------------|---------|------|----------|--------------------|
+| `device_id`      | string  | 是*  | -        | 设备 ID            |
+| `entity`         | string  | 否   | 自动推断 | 喂食计划传感器     |
+| `history_entity` | string  | 否   | 自动推断 | 历史记录传感器     |
+| `name`           | string  | 否   | 设备名   | 卡片标题           |
+| `show_timeline`  | bool    | 否   | true     | 显示时间线         |
+| `show_summary`   | bool    | 否   | true     | 显示统计           |
+| `show_actions`   | bool    | 否   | true     | 显示操作按钮       |
 
 *`device_id` 和 `entity` 二选一必填
 
 ## 支持设备
 
-| 设备 | 型号 | 状态 |
-|------|------|------|
-| Fresh Element Solo | D4 | ✅ 已支持 |
-| Fresh Element | D3 | 🚧 暂不支持 |
-| Fresh Element Duo | D4s | 🚧 暂不支持 |
-| Feeder Mini | Mini | 🚧 暂不支持 |
+| 设备               | 型号  | 状态         |
+|--------------------|-------|--------------|
+| Fresh Element Solo | D4    | ✅ 已支持    |
+| Fresh Element      | D3    | 🚧 暂不支持  |
+| Fresh Element Duo  | D4s   | 🚧 暂不支持  |
+| Feeder Mini        | Mini  | 🚧 暂不支持  |
 
 ## 相关项目
 

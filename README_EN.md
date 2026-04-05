@@ -20,6 +20,19 @@ A Home Assistant Lovelace card designed for PetKit smart feeders.
 - **Status Monitoring** - Real-time device status, WiFi signal, desiccant status
 - **Weekly View** - Quick navigation between different days
 
+## Interaction
+
+| Action           | Effect                |
+|------------------|-----------------------|
+| Click time       | Edit time             |
+| Click name       | Edit name             |
+| Click amount     | Edit portion size     |
+| Click toggle     | Enable/disable plan   |
+| Click delete     | Delete plan           |
+| Focus out        | Auto save             |
+| ESC              | Cancel edit           |
+| Click dashed box | Add new plan          |
+
 ## Prerequisites
 
 1. Home Assistant (2024.1.0 or higher)
@@ -40,15 +53,14 @@ A Home Assistant Lovelace card designed for PetKit smart feeders.
 1. Download `dist/petkit-feeder-card.js`
 2. Copy to your Home Assistant `www` directory
 3. Add resource reference in Lovelace configuration:
+
    ```yaml
    resources:
      - url: /local/petkit-feeder-card.js
        type: module
    ```
 
-## Usage
-
-Add the card to your Lovelace dashboard:
+## Configuration
 
 ```yaml
 type: custom:petkit-feeder-card
@@ -59,24 +71,43 @@ device_id: "YOUR_DEVICE_ID"
 
 ### Configuration Options
 
-| Parameter | Required | Description |
-|-----------|----------|-------------|
-| `device_id` | Yes | PetKit device ID, found in the integration device page |
+| Parameter        | Type    | Required | Default       | Description                |
+|------------------|---------|----------|---------------|----------------------------|
+| `device_id`      | string  | Yes*     | -             | Device ID                  |
+| `entity`         | string  | No       | Auto-inferred | Feeding plan sensor        |
+| `history_entity` | string  | No       | Auto-inferred | History record sensor      |
+| `name`           | string  | No       | Device name   | Card title                 |
+| `show_timeline`  | bool    | No       | true          | Show timeline              |
+| `show_summary`   | bool    | No       | true          | Show statistics            |
+| `show_actions`   | bool    | No       | true          | Show action buttons        |
+
+*Either `device_id` or `entity` is required
 
 ## Supported Devices
 
-| Device | Model | Status |
-|--------|-------|--------|
-| Fresh Element Solo | D4 | ✅ Supported |
-| Fresh Element | D3 | 🚧 Not Supported |
-| Fresh Element Duo | D4s | 🚧 Not Supported |
-| Feeder Mini | Mini | 🚧 Not Supported |
+| Device             | Model | Status            |
+|--------------------|-------|-------------------|
+| Fresh Element Solo | D4    | ✅ Supported      |
+| Fresh Element      | D3    | 🚧 Not Supported  |
+| Fresh Element Duo  | D4s   | 🚧 Not Supported  |
+| Feeder Mini        | Mini  | 🚧 Not Supported  |
 
 ## Related Projects
 
 - [PetKit Feeder Integration](https://github.com/ningjx/Home-Petkit) - Backend integration
 
+## Development
+
+```bash
+npm install
+npm run build
+```
+
 ## Disclaimer
 
 - This is not an official PetKit product
 - API may change without notice
+
+## License
+
+MIT
