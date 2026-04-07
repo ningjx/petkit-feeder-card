@@ -4,7 +4,7 @@ import { LitElement, html, svg } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { HomeAssistant } from 'custom-card-helpers';
 import { PetkitSoloCardConfig, TimelineItem, TodaySummary } from './types';
-import { getEntityId, getTodayWeekdayNumber } from './utils';
+import { getEntityId, getTodayWeekdayNumber, getConnectivityEntityId } from './utils';
 import { processWeeklyData } from './data';
 import { combineStyles } from './styles';
 import { saveFeed, toggleFeedingItem } from './services/plan';
@@ -101,10 +101,16 @@ export class PetkitFeederCard extends LitElement {
       `;
     }
 
+    // 读取在线状态
+    const connectivityEntityId = getConnectivityEntityId(this._config);
+    const connectivityEntity = this.hass.states[connectivityEntityId];
+    const isOnline = connectivityEntity?.state === 'on';
+
     // 处理一周数据
     const weeklyData = processWeeklyData(
       planEntity.attributes,
-      historyEntity?.attributes || {}
+      historyEntity?.attributes || {},
+      isOnline
     );
 
     // 初始化或更新缓存

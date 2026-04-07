@@ -9,6 +9,7 @@ export interface PetkitSoloCardConfig {
   refresh_entity?: string;      // 刷新按钮实体
   feed_amount_entity?: string;  // 出粮量实体
   device_name_entity?: string;  // 设备名称实体
+  connectivity_entity?: string; // 在线状态实体
   
   // 显示控制
   show_timeline?: boolean;     // 显示时间线（默认 true）

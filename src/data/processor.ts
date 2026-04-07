@@ -12,11 +12,13 @@ export type { PendingChange };
  * 处理一周数据
  * @param planAttrs 喂食计划实体属性
  * @param historyAttrs 喂食记录实体属性
+ * @param isOnline 在线状态
  * @returns 周视图数据
  */
 export function processWeeklyData(
   planAttrs: any,
-  historyAttrs: any
+  historyAttrs: any,
+  isOnline: boolean
 ): WeeklyViewData {
   const weeklyPlans = parseWeeklyPlans(planAttrs);
   const weekDates = getWeekDates();
@@ -28,7 +30,7 @@ export function processWeeklyData(
     const records = parseDayRecords(historyAttrs, dateStr);
     
     const timeline = mergeTimeline(planData.items, records);
-    const summary = calculateSummary(historyAttrs, dateStr, timeline);
+    const summary = calculateSummary(historyAttrs, dateStr, timeline, isOnline);
 
     days.set(day, {
       day,
@@ -49,15 +51,17 @@ export function processWeeklyData(
  * 处理单天数据（兼容旧接口）
  * @param planAttrs 喂食计划实体属性
  * @param historyAttrs 喂食记录实体属性
+ * @param isOnline 在线状态
  * @param pendingChanges 待提交变更（可选）
  * @returns 时间线和统计数据
  */
 export function processTodayData(
   planAttrs: any,
   historyAttrs: any,
+  isOnline: boolean,
   pendingChanges?: Map<string, PendingChange>
 ): { timeline: TimelineItem[]; summary: TodaySummary } {
-  const weeklyData = processWeeklyData(planAttrs, historyAttrs);
+  const weeklyData = processWeeklyData(planAttrs, historyAttrs, isOnline);
   const today = new Date().getDay();
   const todayNum = today === 0 ? 7 : today;
   const dayData = weeklyData.days.get(todayNum);

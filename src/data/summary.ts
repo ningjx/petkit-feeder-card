@@ -7,12 +7,14 @@ import { TimelineItem, TodaySummary } from '../types';
  * @param historyAttrs 喂食历史实体属性
  * @param dateStr 日期字符串 (YYYY-MM-DD)
  * @param timeline 时间线数据
+ * @param isOnline 在线状态
  * @returns 统计数据
  */
 export function calculateSummary(
   historyAttrs: any,
   dateStr: string,
-  timeline: TimelineItem[]
+  timeline: TimelineItem[],
+  isOnline: boolean
 ): TodaySummary {
   // 从喂食记录传感器读取对应日期的数据
   const records = historyAttrs.records || {};
@@ -25,8 +27,6 @@ export function calculateSummary(
   const totalCount = dayData.times || timeline.length;
   const completedCount = timeline.filter(item => item.isExecuted).length;
   const pendingCount = totalCount - completedCount;
-
-  const isOnline = timeline.length > 0;
 
   const executedItems = timeline.filter(item => item.isExecuted && item.completedAt);
   const lastFeedingItem = executedItems.length > 0
