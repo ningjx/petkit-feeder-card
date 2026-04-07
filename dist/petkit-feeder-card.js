@@ -682,7 +682,7 @@ function e(e,t,i,s){var n,a=arguments.length,o=a<3?t:null===s?s=Object.getOwnPro
             <p>实体不存在：${e}</p>
           </div>
         </ha-card>
-      `;const n=(a=this._config).connectivity_entity||`binary_sensor.petkit_feeder_${a.device_id}_connectivity`;var a;const o=this.hass.states[n],r="on"===o?.state,l=ve(i.attributes,s?.attributes||{},r);this._weeklyCache.originData||(this._weeklyCache.initOrigin(l),this._selectedDay=_e());const d=this._weeklyCache.getDayCache(this._selectedDay),c=d?.timeline||[],h=d?.summary||this._emptySummary();let p=this._config.name;if(!p){const e=this._config.device_name_entity||this._getEntityId("device_name"),t=this.hass.states[e];p=t?.state}return p||(p=i.attributes.friendly_name||"小佩喂食器"),B`
+      `;const n=(a=this._config).connectivity_entity||`binary_sensor.petkit_feeder_${a.device_id}_online`;var a;const o=this.hass.states[n],r="on"===o?.state,l=ve(i.attributes,s?.attributes||{},r);this._weeklyCache.originData||(this._weeklyCache.initOrigin(l),this._selectedDay=_e());const d=this._weeklyCache.getDayCache(this._selectedDay),c=d?.timeline||[],h=d?.summary||this._emptySummary();let p=this._config.name;if(!p){const e=this._config.device_name_entity||this._getEntityId("device_name"),t=this.hass.states[e];p=t?.state}return p||(p=i.attributes.friendly_name||"小佩喂食器"),B`
       <ha-card @focusout=${this._handleCardFocusOut}>
         <div class="header">
           <span class="header-title">${p}</span>

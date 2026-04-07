@@ -41,5 +41,5 @@ export function getDeviceNameEntityId(config: PetkitSoloCardConfig): string {
  * 获取在线状态传感器实体 ID
  */
 export function getConnectivityEntityId(config: PetkitSoloCardConfig): string {
-  return config.connectivity_entity || `binary_sensor.petkit_feeder_${config.device_id}_connectivity`;
+  return config.connectivity_entity || `binary_sensor.petkit_feeder_${config.device_id}_online`;
 }
