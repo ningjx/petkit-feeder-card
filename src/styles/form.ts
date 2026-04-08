@@ -24,7 +24,7 @@ export const formStyles = css`
     min-width: 55px;
     max-width: 55px;
     padding: 0;
-    text-align: center;
+    text-align: left;
     cursor: pointer;
     position: relative;
   }

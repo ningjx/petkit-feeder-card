@@ -547,7 +547,7 @@ function e(e,t,i,s){var n,a=arguments.length,o=a<3?t:null===s?s=Object.getOwnPro
     min-width: 55px;
     max-width: 55px;
     padding: 0;
-    text-align: center;
+    text-align: left;
     cursor: pointer;
     position: relative;
   }
