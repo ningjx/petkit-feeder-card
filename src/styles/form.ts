@@ -4,9 +4,9 @@ import { css } from 'lit';
 
 export const formStyles = css`
   .edit-time, .edit-name, .edit-amount {
-    font-size: 11px;
+    font-size: 14px;
     font-family: inherit;
-    padding: 2px 3px;
+    padding: 0px 0px;
     border: 1px solid var(--primary-color, #03a9f4);
     border-radius: 4px;
     outline: none;
@@ -42,7 +42,7 @@ export const formStyles = css`
   }
   
   .edit-time::-webkit-datetime-edit {
-    padding: 2px 4px;
+    padding: 0px 0px;
     display: flex;
     justify-content: center;
   }
@@ -81,7 +81,7 @@ export const formStyles = css`
     width: 40px;
     min-width: 40px;
     max-width: 40px;
-    padding: 2px 3px;
+    padding: 0px 0px;
     text-align: center;
   }
 `;

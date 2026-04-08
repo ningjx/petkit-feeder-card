@@ -7,13 +7,13 @@ export const timelineStyles = css`
   .timeline-list {
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 4px;
   }
   
   .timeline-item {
     border: 1px solid var(--divider-color);
     border-radius: 6px;
-    padding: 8px 10px;
+    padding: 6px 10px;
     background: var(--card-background-color);
   }
   
@@ -26,18 +26,19 @@ export const timelineStyles = css`
     align-items: center;
     gap: 8px;
     margin-bottom: 0;
+    /*line-height: 1.3;*/
   }
   
   .time {
     font-weight: bold;
-    font-size: 12px;
+    font-size: 14px;
     color: var(--primary-color);
     flex-shrink: 0;
     width: 55px;
   }
   
   .name {
-    font-size: 11px;
+    font-size: 14px;
     color: var(--primary-text-color);
     overflow: hidden;
     text-overflow: ellipsis;
@@ -48,7 +49,7 @@ export const timelineStyles = css`
   
   .amount {
     font-weight: bold;
-    font-size: 11px;
+    font-size: 14px;
     color: var(--primary-text-color);
     flex-shrink: 0;
     width: 40px;
@@ -133,7 +134,7 @@ export const timelineStyles = css`
   
   /* 时间线列表底部（新增计划按钮） */
   .timeline-list-footer {
-    margin-top: 6px;
-    margin-bottom: 8px;
+    margin-top: 4px;
+    margin-bottom: 4px;
   }
 `;

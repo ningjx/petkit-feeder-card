@@ -13,7 +13,7 @@ export const baseStyles = css`
   
   /* 区块 */
   .section {
-    margin-bottom: 8px;
+    margin-bottom: 0px;
   }
 
   /* 周天切换栏 */
@@ -21,19 +21,19 @@ export const baseStyles = css`
     display: flex;
     gap: 4px;
     padding: 3px 0;
-    margin-bottom: 3px;
+    margin-bottom: 4px;
     border-bottom: 1px solid var(--divider-color, #e0e0e0);
   }
 
   .weekday-tab {
     flex: 1;
-    height: 30px;
+    height: 28px;
     padding: 0 4px;
     border: 2px solid transparent;
     border-radius: 4px;
     background: transparent;
     color: var(--secondary-text-color, #757575);
-    font-size: 12px;
+    font-size: 14px;
     cursor: pointer;
     transition: all 0.2s ease;
     box-sizing: border-box;

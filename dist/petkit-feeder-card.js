@@ -9,7 +9,7 @@ function e(e,t,i,s){var n,a=arguments.length,o=a<3?t:null===s?s=Object.getOwnPro
   
   /* 区块 */
   .section {
-    margin-bottom: 8px;
+    margin-bottom: 0px;
   }
 
   /* 周天切换栏 */
@@ -17,19 +17,19 @@ function e(e,t,i,s){var n,a=arguments.length,o=a<3?t:null===s?s=Object.getOwnPro
     display: flex;
     gap: 4px;
     padding: 3px 0;
-    margin-bottom: 3px;
+    margin-bottom: 4px;
     border-bottom: 1px solid var(--divider-color, #e0e0e0);
   }
 
   .weekday-tab {
     flex: 1;
-    height: 30px;
+    height: 28px;
     padding: 0 4px;
     border: 2px solid transparent;
     border-radius: 4px;
     background: transparent;
     color: var(--secondary-text-color, #757575);
-    font-size: 12px;
+    font-size: 14px;
     cursor: pointer;
     transition: all 0.2s ease;
     box-sizing: border-box;
@@ -59,20 +59,20 @@ function e(e,t,i,s){var n,a=arguments.length,o=a<3?t:null===s?s=Object.getOwnPro
     display: flex;
     align-items: center;
     gap: 8px;
-    margin-bottom: 3px;
-    padding-bottom: 6px;
+    margin-bottom: 0px;
+    padding-bottom: 4px;
     border-bottom: 1px solid var(--divider-color);
     position: relative;
   }
   
   .header-title {
-    font-size: 14px;
+    font-size: 15px;
     font-weight: bold;
     z-index: 1;
   }
   
   .header-date {
-    font-size: 12px;
+    font-size: 14px;
     font-weight: bold;
     color: var(--secondary-text-color);
     position: absolute;
@@ -123,8 +123,8 @@ function e(e,t,i,s){var n,a=arguments.length,o=a<3?t:null===s?s=Object.getOwnPro
   }
   
   .icon-btn:focus {
-    outline: 2px solid var(--primary-color, #03a9f4);
-    outline-offset: 2px;
+    outline: 0px solid var(--primary-color, #03a9f4);
+    outline-offset: 0px;
   }
   
   .btn-svg {
@@ -146,7 +146,6 @@ function e(e,t,i,s){var n,a=arguments.length,o=a<3?t:null===s?s=Object.getOwnPro
   .refresh-btn:hover .btn-svg {
     transform: rotate(180deg);
   }
-  
   /* 手动喂食按钮 - 主要操作，突出显示 */
   .feed-btn {
     width: 36px;
@@ -396,13 +395,13 @@ function e(e,t,i,s){var n,a=arguments.length,o=a<3?t:null===s?s=Object.getOwnPro
   .timeline-list {
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 4px;
   }
   
   .timeline-item {
     border: 1px solid var(--divider-color);
     border-radius: 6px;
-    padding: 8px 10px;
+    padding: 6px 10px;
     background: var(--card-background-color);
   }
   
@@ -415,18 +414,19 @@ function e(e,t,i,s){var n,a=arguments.length,o=a<3?t:null===s?s=Object.getOwnPro
     align-items: center;
     gap: 8px;
     margin-bottom: 0;
+    /*line-height: 1.3;*/
   }
   
   .time {
     font-weight: bold;
-    font-size: 12px;
+    font-size: 14px;
     color: var(--primary-color);
     flex-shrink: 0;
     width: 55px;
   }
   
   .name {
-    font-size: 11px;
+    font-size: 14px;
     color: var(--primary-text-color);
     overflow: hidden;
     text-overflow: ellipsis;
@@ -437,7 +437,7 @@ function e(e,t,i,s){var n,a=arguments.length,o=a<3?t:null===s?s=Object.getOwnPro
   
   .amount {
     font-weight: bold;
-    font-size: 11px;
+    font-size: 14px;
     color: var(--primary-text-color);
     flex-shrink: 0;
     width: 40px;
@@ -522,14 +522,14 @@ function e(e,t,i,s){var n,a=arguments.length,o=a<3?t:null===s?s=Object.getOwnPro
   
   /* 时间线列表底部（新增计划按钮） */
   .timeline-list-footer {
-    margin-top: 6px;
-    margin-bottom: 8px;
+    margin-top: 4px;
+    margin-bottom: 4px;
   }
 `,ke=o`
   .edit-time, .edit-name, .edit-amount {
-    font-size: 11px;
+    font-size: 14px;
     font-family: inherit;
-    padding: 2px 3px;
+    padding: 0px 0px;
     border: 1px solid var(--primary-color, #03a9f4);
     border-radius: 4px;
     outline: none;
@@ -565,7 +565,7 @@ function e(e,t,i,s){var n,a=arguments.length,o=a<3?t:null===s?s=Object.getOwnPro
   }
   
   .edit-time::-webkit-datetime-edit {
-    padding: 2px 4px;
+    padding: 0px 0px;
     display: flex;
     justify-content: center;
   }
@@ -604,7 +604,7 @@ function e(e,t,i,s){var n,a=arguments.length,o=a<3?t:null===s?s=Object.getOwnPro
     width: 40px;
     min-width: 40px;
     max-width: 40px;
-    padding: 2px 3px;
+    padding: 0px 0px;
     text-align: center;
   }
 `,Ee=o`
@@ -613,7 +613,7 @@ function e(e,t,i,s){var n,a=arguments.length,o=a<3?t:null===s?s=Object.getOwnPro
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     align-items: center;
-    padding: 6px 8px;
+    padding: 4px 4px;
     border: 1px solid var(--divider-color);
     border-radius: 6px;
     background: var(--card-background-color);
@@ -631,7 +631,7 @@ function e(e,t,i,s){var n,a=arguments.length,o=a<3?t:null===s?s=Object.getOwnPro
   }
   
   .summary-label {
-    font-size: 9px;
+    font-size: 11px;
     color: var(--secondary-text-color);
   }
   

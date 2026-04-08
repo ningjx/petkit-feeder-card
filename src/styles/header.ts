@@ -8,20 +8,20 @@ export const headerStyles = css`
     display: flex;
     align-items: center;
     gap: 8px;
-    margin-bottom: 3px;
-    padding-bottom: 6px;
+    margin-bottom: 0px;
+    padding-bottom: 4px;
     border-bottom: 1px solid var(--divider-color);
     position: relative;
   }
   
   .header-title {
-    font-size: 14px;
+    font-size: 15px;
     font-weight: bold;
     z-index: 1;
   }
   
   .header-date {
-    font-size: 12px;
+    font-size: 14px;
     font-weight: bold;
     color: var(--secondary-text-color);
     position: absolute;

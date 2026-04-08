@@ -8,7 +8,7 @@ export const summaryStyles = css`
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     align-items: center;
-    padding: 6px 8px;
+    padding: 4px 4px;
     border: 1px solid var(--divider-color);
     border-radius: 6px;
     background: var(--card-background-color);
@@ -26,7 +26,7 @@ export const summaryStyles = css`
   }
   
   .summary-label {
-    font-size: 9px;
+    font-size: 11px;
     color: var(--secondary-text-color);
   }
   

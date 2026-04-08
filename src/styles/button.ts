@@ -38,8 +38,8 @@ export const buttonStyles = css`
   }
   
   .icon-btn:focus {
-    outline: 2px solid var(--primary-color, #03a9f4);
-    outline-offset: 2px;
+    outline: 0px solid var(--primary-color, #03a9f4);
+    outline-offset: 0px;
   }
   
   .btn-svg {
@@ -61,7 +61,6 @@ export const buttonStyles = css`
   .refresh-btn:hover .btn-svg {
     transform: rotate(180deg);
   }
-  
   /* 手动喂食按钮 - 主要操作，突出显示 */
   .feed-btn {
     width: 36px;
