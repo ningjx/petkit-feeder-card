@@ -38,7 +38,7 @@ export const timelineStyles = css`
   
   .name {
     font-size: 11px;
-    color: var(--secondary-text-color);
+    color: var(--primary-text-color);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;

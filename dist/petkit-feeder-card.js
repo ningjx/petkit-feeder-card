@@ -427,7 +427,7 @@ function e(e,t,i,s){var n,a=arguments.length,o=a<3?t:null===s?s=Object.getOwnPro
   
   .name {
     font-size: 11px;
-    color: var(--secondary-text-color);
+    color: var(--primary-text-color);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
