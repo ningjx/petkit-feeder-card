@@ -16,7 +16,7 @@ function e(e,t,i,s){var n,a=arguments.length,o=a<3?t:null===s?s=Object.getOwnPro
   .weekday-tabs {
     display: flex;
     gap: 4px;
-    padding: 3px 0;
+    padding: 4px 0;
     margin-bottom: 4px;
     border-bottom: 1px solid var(--divider-color, #e0e0e0);
   }
