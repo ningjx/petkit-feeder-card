@@ -40,7 +40,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add -f dist/petkit-feeder-card.js dist/localize
+          git add -f dist/petkit-feeder-card.js
           git diff --staged --quiet || git commit -m "build: update dist file for ${{ steps.version.outputs.VERSION }}"
           git push origin main
 
@@ -57,9 +57,6 @@ jobs:
       - name: Release
         uses: softprops/action-gh-release@v2
         with:
-          files: |
-            dist/petkit-feeder-card.js
-            dist/localize/zh.json
-            dist/localize/en.json
+          files: dist/petkit-feeder-card.js
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
