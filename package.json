@@ -4,7 +4,7 @@
   "description": "小佩喂食器 Lovelace 卡片",
   "main": "dist/petkit-feeder-card.js",
   "scripts": {
-    "build": "rollup -c --bundleConfigAsCjs",
+    "build": "rollup -c --bundleConfigAsCjs && node scripts/copy-localize.js",
     "start": "rollup -c --watch --bundleConfigAsCjs",
     "lint": "eslint src/**/*.ts"
   },
