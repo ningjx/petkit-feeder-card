@@ -3,6 +3,7 @@
 import { LitElement, html, css } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { PetkitSoloCardConfig } from './types';
+import { localize, getLanguage } from './localize';
 
 @customElement('petkit-feeder-card-editor')
 export class PetkitFeederCardEditor extends LitElement {
@@ -14,44 +15,44 @@ export class PetkitFeederCardEditor extends LitElement {
       name: 'device_id', 
       required: false, 
       selector: { text: {} },
-      label: '设备ID'
+      label: 'editor.device_id'
     },
     { 
       name: 'entity', 
       required: false, 
       selector: { entity: { domain: ['sensor'] } },
-      label: '喂食计划实体（可选，提供 device_id 时自动推断）'
+      label: 'editor.entity'
     },
     { 
       name: 'history_entity', 
       required: false, 
       selector: { entity: { domain: ['sensor'] } },
-      label: '历史记录实体'
+      label: 'editor.history_entity'
     },
     { 
       name: 'name', 
       selector: { text: {} },
-      label: '卡片标题（可选，默认使用设备名称）'
+      label: 'editor.card_title'
     },
     {
       type: 'grid',
       name: '',
-      title: '显示控制',
+      title: 'editor.display_control',
       schema: [
         { 
           name: 'show_timeline', 
           selector: { boolean: {} },
-          label: '显示时间线'
+          label: 'editor.show_timeline'
         },
         { 
           name: 'show_summary', 
           selector: { boolean: {} },
-          label: '显示统计'
+          label: 'editor.show_summary'
         },
         { 
           name: 'show_actions', 
           selector: { boolean: {} },
-          label: '显示操作按钮'
+          label: 'editor.show_actions'
         },
       ],
     },
@@ -59,7 +60,7 @@ export class PetkitFeederCardEditor extends LitElement {
 
   protected render() {
     if (!this.hass || !this.config) {
-      return html`<div>正在加载...</div>`;
+      return html`<div>${this._localize('common.loading_editor')}</div>`;
     }
 
     return html`
@@ -74,16 +75,7 @@ export class PetkitFeederCardEditor extends LitElement {
   }
 
   private _computeLabel = (schema: any) => {
-    const labels: Record<string, string> = {
-      device_id: '设备ID',
-      entity: '喂食计划实体',
-      history_entity: '历史记录实体',
-      name: '卡片标题',
-      show_timeline: '显示时间线',
-      show_summary: '显示统计',
-      show_actions: '显示操作按钮',
-    };
-    return labels[schema.name] || schema.label || schema.name;
+    return this._localize(schema.name || schema.label || schema.title);
   };
 
   private _valueChanged(ev: CustomEvent) {
@@ -96,6 +88,11 @@ export class PetkitFeederCardEditor extends LitElement {
       composed: true,
     });
     this.dispatchEvent(event);
+  }
+
+  private _localize(key: string): string {
+    const lang = getLanguage(this.hass || {});
+    return localize(key, lang);
   }
 
   static get styles() {

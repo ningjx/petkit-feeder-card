@@ -1,6 +1,7 @@
 import resolve from '@rollup/plugin-node-resolve';
 import typescript from '@rollup/plugin-typescript';
 import terser from '@rollup/plugin-terser';
+import json from '@rollup/plugin-json';
 
 const outputDir = process.env.BUILD_DIR || 'tmp';
 
@@ -12,8 +13,9 @@ export default {
     sourcemap: false,
   },
   plugins: [
+    json(),
     resolve({
-      extensions: ['.ts', '.js'],
+      extensions: ['.ts', '.js', '.json'],
     }),
     typescript({
       declaration: false,
@@ -28,7 +30,7 @@ export default {
         comments: false,
       },
       compress: {
-        drop_console: false, // 保留 console 用于调试
+        drop_console: false,
       },
     }),
   ],

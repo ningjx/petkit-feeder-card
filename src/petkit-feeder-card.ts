@@ -9,7 +9,7 @@ import { processWeeklyData } from './data';
 import { combineStyles } from './styles';
 import { saveFeed, toggleFeedingItem } from './services/plan';
 import { WeeklyCacheManager } from './state';
-import { WEEKDAY_NAMES } from './utils/constants';
+import { localize, getLanguage } from './localize';
 
 @customElement('petkit-feeder-card')
 export class PetkitFeederCard extends LitElement {
@@ -46,7 +46,7 @@ export class PetkitFeederCard extends LitElement {
 
   public setConfig(config: PetkitSoloCardConfig): void {
     if (!config.device_id && !config.entity) {
-      throw new Error('需要定义 device_id 或 entity');
+      throw new Error(localize('error.device_or_entity_required'));
     }
     this._config = {
       ...config,
@@ -81,7 +81,7 @@ export class PetkitFeederCard extends LitElement {
 
   protected render() {
     if (!this._config || !this.hass) {
-      return html`<div>加载中...</div>`;
+      return html`<div>${this._localize('common.loading')}</div>`;
     }
 
     const planEntityId = this._config.entity || this._getEntityId('feeding_schedule');
@@ -95,7 +95,7 @@ export class PetkitFeederCard extends LitElement {
         <ha-card>
           <div class="error-state">
             <ha-icon .icon=${'mdi:alert-circle'}></ha-icon>
-            <p>实体不存在：${planEntityId}</p>
+            <p>${this._localize('error.entity_not_found', { entityId: planEntityId })}</p>
           </div>
         </ha-card>
       `;
@@ -131,7 +131,7 @@ export class PetkitFeederCard extends LitElement {
       deviceName = deviceNameEntity?.state;
     }
     if (!deviceName) {
-      deviceName = planEntity.attributes.friendly_name || '小佩喂食器';
+      deviceName = planEntity.attributes.friendly_name || this._localize('default.device_name');
     }
 
     return html`
@@ -143,7 +143,7 @@ export class PetkitFeederCard extends LitElement {
             <button 
               class="icon-btn refresh-btn" 
               @click=${this._handleRefresh}
-              title="刷新数据"
+              title="${this._localize('button.refresh')}"
             >
               <svg viewBox="0 0 1024 1024" class="btn-svg">
                 <path d="M680.64 32.768a41.6 41.6 0 0 0-56.384-17.152c-10.88 5.824-16 15.808-20.864 27.072l-22.336 47.68A450.752 450.752 0 0 0 512 85.12C271.68 85.12 74.688 275.072 74.688 512c0 77.952 21.44 151.04 58.816 213.952a41.6 41.6 0 0 0 57.088 14.528 41.856 41.856 0 0 0 14.464-57.28A333.696 333.696 0 0 1 157.952 512c0-188.48 157.312-343.36 354.048-343.36 36.288 0 71.232 5.248 104.064 15.04l1.984 0.64c16.64 4.928 32.064 9.536 44.032 11.776 6.144 1.216 14.592 2.432 23.36 1.664a50.56 50.56 0 0 0 35.2-17.92 50.688 50.688 0 0 0 10.944-37.312 81.472 81.472 0 0 0-5.888-22.656 442.944 442.944 0 0 0-19.2-38.528l-0.96-1.92-24.96-46.72zM890.56 298.048a41.6 41.6 0 0 0-57.152-14.528 41.856 41.856 0 0 0-14.464 57.28c30.016 50.432 47.104 108.8 47.104 171.2 0 188.48-157.312 343.36-354.048 343.36a363.968 363.968 0 0 1-104.064-15.04l-2.176-0.64a504 504 0 0 0-43.84-11.776 85.952 85.952 0 0 0-23.36-1.664 50.56 50.56 0 0 0-35.2 17.92 50.752 50.752 0 0 0-10.944 37.312c0.832 8.96 3.648 16.96 5.888 22.656 4.416 10.88 11.584 24.32 19.136 38.464l25.92 48.64a41.6 41.6 0 0 0 56.384 17.152c10.88-5.824 16.384-17.152 20.864-27.072L448 934.4c20.928 2.944 42.24 4.48 64 4.48 240.32 0 437.312-189.888 437.312-426.88 0-77.952-21.44-151.04-58.752-213.952z"/>
@@ -152,7 +152,7 @@ export class PetkitFeederCard extends LitElement {
             <button 
               class="icon-btn feed-btn" 
               @click=${this._handleManualFeed}
-              title="手动喂食"
+              title="${this._localize('button.manual_feed')}"
             >
               <svg viewBox="150 150 724 724" class="btn-svg">
                 <path d="M431.424 246.336c36.576-14.208 74.112-1.024 107.04 40.48l-0.32-0.384-2.016-2.464 7.264-3.84c42.432-21.44 83.84-22.304 112 16.128l0.864 1.248 3.552-1.92c34.24-17.376 75.168-2.144 116.832 50.304l5.024 6.496 3.2 4.416c4.16 6.848 6.4 14.4 6.4 22.272l-0.128-2.752 1.76 13.76 2.56 17.664c0.96 6.176 1.984 12.608 3.104 19.328 6.4 38.24 14.368 76.448 24 111.968 9.216 34.08 19.52 63.808 30.24 86.816l2.72 5.76 1.504 3.744c1.6 4.224 2.848 8.448 3.616 12.736 0.608 3.104 0.928 6.176 0.928 9.248 0 69.312-162.336 126.272-343.552 128.352l-10.272 0.064c-186.88 0-353.888-55.232-353.888-125.536 0-7.136 1.408-14.112 3.904-21.76 1.216-3.68 2.56-7.136 4.48-11.936l3.648-9.056c0.736-1.92 1.12-3.2 1.792-5.44a786.496 786.496 0 0 0 43.648-166.016c2.72-18.432 4.448-35.104 5.408-49.664l0.672-13.44 0.096-3.84 0.32-5.184a43.52 43.52 0 0 1 7.264-18.912l2.272-3.488c4.96-8.32 13.568-19.904 25.696-31.552 34.496-33.12 76.672-45.216 121.152-20.16l-2.464-1.312 2.336-3.328c14.4-20.224 31.04-36.48 50.688-45.92z m318.912 183.04c-49.728 25.664-140.224 39.104-245.952 39.104h-10.24c-99.072-0.864-183.712-13.696-232.416-37.44a821.888 821.888 0 0 1-48.48 196l-1.664 5.408a161.76 161.76 0 0 1-2.24 5.696l-2.656 6.528c-1.568 3.84-2.528 6.4-3.296 8.736a25.408 25.408 0 0 0-1.504 6.816c0 29.44 145.504 77.536 305.856 77.536 155.968 0 299.712-48.192 305.6-78.496l0.192-2.016-0.064-0.384a28.256 28.256 0 0 0-1.376-4.512l-1.088-2.688-1.184-2.432c-12.576-26.88-23.68-59.104-33.6-95.648a1218.656 1218.656 0 0 1-25.024-116.608z m-416.096 85.12a24 24 0 0 1 24.16 20.288l0.32 3.648c0.256 28.576-6.496 71.712-26.88 121.92a24 24 0 1 1-44.48-18.08c10.336-25.44 16.96-50.08 20.544-73.056 0.832-5.44 1.472-10.496 1.92-15.168l0.736-9.504 0.128-5.632a24 24 0 0 1 23.552-24.384z m166.624-197.824c-20.64-26.048-36.544-31.616-52.064-25.6-13.44 5.216-27.392 19.2-39.36 37.344-12.832 19.488-38.784 24.48-58.816 13.152l-4.544-2.336c-21.12-9.696-40.384-3.296-59.744 15.264l-3.072 3.072-1.696 1.856-1.152 1.344 2.464 1.312c39.488 19.744 76.992 28.608 109.056 26.048l3.264-0.32c32.96-4.16 56.896-23.328 63.008-53.024l0.544-3.072a56.32 56.32 0 0 0-12.8-9.824l-3.712-1.984c-2.88-1.6-5.952-3.328-9.152-5.248l2.112-2.048c20.864-20.032 43.584-25.536 62.4-14.272 6.368 3.68 12.032 8.768 17.376 15.68z m79.552-64.64c-6.336-3.68-10.56-9.408-12.992-17.28l-0.64-2.304 3.456 1.664c6.464 3.136 10.24 8.256 11.456 14.72l0.384 2.88-1.664 0.32z"/>
@@ -191,7 +191,7 @@ export class PetkitFeederCard extends LitElement {
             class="weekday-tab ${this._selectedDay === day ? 'active' : ''} ${day === today ? 'today' : ''}"
             @click=${() => this._handleDaySwitch(day)}
           >
-            ${WEEKDAY_NAMES[day]}
+            ${this._localize(`weekday.${day}`)}
           </button>
         `)}
       </div>
@@ -208,18 +208,17 @@ export class PetkitFeederCard extends LitElement {
 
   private _getDateDisplay(): string {
     const today = new Date();
-    const currentWeekday = today.getDay(); // 0=周日, 1=周一...
-    const currentWeekdayNum = currentWeekday === 0 ? 7 : currentWeekday; // 转为 1=周一...7=周日
+    const currentWeekday = today.getDay();
+    const currentWeekdayNum = currentWeekday === 0 ? 7 : currentWeekday;
     
-    // 计算选中周天对应的日期
     const daysDiff = this._selectedDay - currentWeekdayNum;
     const targetDate = new Date(today);
     targetDate.setDate(today.getDate() + daysDiff);
     
     const month = targetDate.getMonth() + 1;
     const day = targetDate.getDate();
-    const weekday = WEEKDAY_NAMES[this._selectedDay];
-    return `${month}月${day}日 ${weekday}`;
+    const weekday = this._localize(`weekday.${this._selectedDay}`);
+    return this._localize('date.format', { month, day, weekday });
   }
 
   private _renderTimeline(timeline: TimelineItem[]) {
@@ -228,7 +227,7 @@ export class PetkitFeederCard extends LitElement {
         <div class="section">
           <div class="empty-state">
             <ha-icon .icon=${'mdi:calendar-blank'}></ha-icon>
-            <p>暂无喂食计划</p>
+            <p>${this._localize('timeline.empty')}</p>
           </div>
         </div>
       `;
@@ -314,7 +313,7 @@ export class PetkitFeederCard extends LitElement {
             .value=${this._editingItem.name}
             @change=${(e: Event) => { if (this._editingItem) this._editingItem.name = (e.target as HTMLInputElement).value; }}
             @keydown=${(e: KeyboardEvent) => { if (e.key === 'Escape') this._cancelEdit(); }}
-            placeholder="名称"
+            placeholder="${this._localize('placeholder.name')}"
           />
         `
       : html`<span class="name ${canEdit ? 'editable' : ''}" @click=${canEdit ? () => this._startEdit(item, 'name') : undefined}>${item.name}</span>`;
@@ -347,14 +346,14 @@ export class PetkitFeederCard extends LitElement {
                   <div 
                     class="toggle-switch ${item.isEnabled ? 'on' : 'off'} ${!canToggle ? 'disabled' : ''}"
                     @click=${canToggle ? () => this._handleToggle(item) : undefined}
-                    title="${item.itemType === 'deleted_plan' ? '已删除计划' : (isExpired ? '已过期' : (item.isExecuted ? '已执行' : (item.isEnabled ? '点击禁用' : '点击启用')))}"
+                    title="${this._getToggleTitle(item, isExpired)}"
                   >
                     <div class="toggle-thumb"></div>
                   </div>
                   <button 
                     class="icon-delete-btn ${!canDeleteBtn ? 'disabled' : ''}" 
                     @click=${canDeleteBtn ? () => this._handleDelete(item) : undefined}
-                    title="${item.itemType === 'deleted_plan' ? '已删除计划' : '删除计划'}"
+                    title="${item.itemType === 'deleted_plan' ? this._localize('status.deleted') : this._localize('button.delete_plan')}"
                     ?disabled=${!canDeleteBtn}
                   >
                     ${deleteIconSvg}
@@ -370,7 +369,7 @@ export class PetkitFeederCard extends LitElement {
   private _renderAddPlanButton() {
     return html`
       <div class="timeline-list-footer">
-        <button class="add-plan-btn" @click=${this._handleAddPlan} title="新增计划">
+        <button class="add-plan-btn" @click=${this._handleAddPlan} title="${this._localize('button.add_plan')}">
           <span class="add-plus"></span>
         </button>
       </div>
@@ -381,19 +380,19 @@ export class PetkitFeederCard extends LitElement {
     return html`
       <div class="summary-row">
         <span class="summary-item">
-          <span class="summary-label">在线状态</span>
-          <span class="summary-value">${summary.isOnline ? '在线' : '离线'}</span>
+          <span class="summary-label">${this._localize('summary.online_status')}</span>
+          <span class="summary-value ${!summary.isOnline ? 'offline' : ''}">${summary.isOnline ? this._localize('status.online') : this._localize('status.offline')}</span>
         </span>
         <span class="summary-item">
-          <span class="summary-label">计划喂食</span>
+          <span class="summary-label">${this._localize('summary.planned_feed')}</span>
           <span class="summary-value">${summary.planAmount}g</span>
         </span>
         <span class="summary-item">
-          <span class="summary-label">实际喂食</span>
+          <span class="summary-label">${this._localize('summary.actual_feed')}</span>
           <span class="summary-value">${summary.actualAmount}g</span>
         </span>
         <span class="summary-item">
-          <span class="summary-label">手动喂食</span>
+          <span class="summary-label">${this._localize('summary.manual_feed')}</span>
           <span class="summary-value">${summary.manualAmount}g</span>
         </span>
       </div>
@@ -529,7 +528,7 @@ export class PetkitFeederCard extends LitElement {
       id: newItemId,
       itemId: newItemId,
       time: '08:00',
-      name: '早餐',
+      name: this._localize('default.plan_name'),
       timeSeconds: 8 * 3600,
       itemType: 'plan',
       plannedAmount: 10,
@@ -539,24 +538,24 @@ export class PetkitFeederCard extends LitElement {
       canDelete: true,
     };
 
-    // 添加到缓存
     const dayCache = this._weeklyCache.getDayCache(this._selectedDay);
     if (dayCache) {
       dayCache.timeline.push(newItem);
       dayCache.timeline.sort((a, b) => a.time.localeCompare(b.time));
     }
 
+    const planName = this._localize('default.plan_name');
     this._editingItem = {
       itemId: newItemId,
       field: 'name',
       time: '08:00',
-      name: '早餐',
+      name: planName,
       amount: 10,
     };
 
     this._originalItemData = {
       time: '08:00',
-      name: '早餐',
+      name: planName,
       amount: 10,
     };
 
@@ -734,6 +733,26 @@ export class PetkitFeederCard extends LitElement {
   }
 
   static styles = combineStyles();
+  
+  private _localize(key: string, params?: Record<string, string | number>): string {
+    const lang = getLanguage(this.hass);
+    return localize(key, lang, params);
+  }
+
+  private _getToggleTitle(item: TimelineItem, isExpired: boolean): string {
+    if (item.itemType === 'deleted_plan') {
+      return this._localize('status.deleted');
+    }
+    if (isExpired) {
+      return this._localize('status.expired');
+    }
+    if (item.isExecuted) {
+      return this._localize('status.executed');
+    }
+    return item.isEnabled
+      ? this._localize('status.click_disable')
+      : this._localize('status.click_enable');
+  }
 }
 
 if (!customElements.get('petkit-feeder-card')) {
