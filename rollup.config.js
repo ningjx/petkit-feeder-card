@@ -2,10 +2,12 @@ import resolve from '@rollup/plugin-node-resolve';
 import typescript from '@rollup/plugin-typescript';
 import terser from '@rollup/plugin-terser';
 
+const outputDir = process.env.BUILD_DIR || 'tmp';
+
 export default {
   input: 'src/index.ts',
   output: {
-    file: 'dist/petkit-feeder-card.js',
+    file: `${outputDir}/petkit-feeder-card.js`,
     format: 'esm',
     sourcemap: false,
   },
