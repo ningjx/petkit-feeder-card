@@ -40,6 +40,7 @@ export const baseStyles = css`
     display: flex;
     align-items: center;
     justify-content: center;
+    white-space: nowrap;  /* 防止文字换行变成竖的 */
   }
 
   .weekday-tab:hover {
