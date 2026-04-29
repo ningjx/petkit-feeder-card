@@ -1,7 +1,6 @@
 /** 时间线合并模块 */
 
 import { FeedingPlanItem, FeedingRecord, TimelineItem } from '../types';
-import { TIME_TOLERANCE } from '../utils';
 
 /** 待提交变更类型 */
 export type PendingChange = {
@@ -26,14 +25,10 @@ export function mergeTimeline(
   pendingChanges?: Map<string, PendingChange>
 ): TimelineItem[] {
   const planItems: TimelineItem[] = plans.map((plan, index) => {
-    const timeParts = plan.time.split(':');
-    const timeSeconds = parseInt(timeParts[0]) * 3600 + parseInt(timeParts[1]) * 60;
-
     return {
       id: `plan_${plan.itemId || plan.time}_${index}`,
-      itemId: plan.itemId || `s${timeSeconds}`,
+      itemId: plan.itemId || plan.time,
       time: plan.time,
-      timeSeconds: timeSeconds,
       name: plan.name,
       itemType: 'plan' as const,
       plannedAmount: plan.amount,
@@ -48,14 +43,15 @@ export function mergeTimeline(
     let matchedPlan: TimelineItem | undefined;
 
     if (record.src === 1) {
-      const recordTimeParts = record.time.split(':');
-      const recordTimeSeconds = parseInt(recordTimeParts[0]) * 3600 + parseInt(recordTimeParts[1]) * 60;
-
       matchedPlan = planItems.find(p => {
-        const timeDiff = Math.abs((p.timeSeconds || 0) - recordTimeSeconds);
-        const nameMatch = p.name === record.name;
-        const timeMatch = timeDiff <= TIME_TOLERANCE;
-        return nameMatch && timeMatch;
+        // 精准时间匹配
+        const timeMatch = p.time === record.time;
+        
+        // 克数相同
+        const amountMatch = p.plannedAmount === record.amount;
+        
+        // 匹配条件：时间相同 且 克数相同
+        return timeMatch && amountMatch;
       });
     }
 
@@ -76,15 +72,11 @@ export function mergeTimeline(
       return null;
     }
 
-    const timeParts = record.time.split(':');
-    const timeSeconds = parseInt(timeParts[0]) * 3600 + parseInt(timeParts[1]) * 60;
-
     if (record.src === 1) {
       return {
         id: `deleted_plan_${record.id || record.time}_${index}`,
-        itemId: record.id || `s${timeSeconds}`,
+        itemId: record.id || record.time,
         time: record.time,
-        timeSeconds: timeSeconds,
         name: record.name || '已删除计划',
         itemType: 'deleted_plan' as const,
         plannedAmount: record.amount,
@@ -99,9 +91,8 @@ export function mergeTimeline(
 
     return {
       id: `manual_${record.id || record.time}_${index}`,
-      itemId: record.id || `s${timeSeconds}`,
+      itemId: record.id || record.time,
       time: record.time,
-      timeSeconds: timeSeconds,
       name: record.name || '手动喂食',
       itemType: 'manual' as const,
       plannedAmount: 0,
