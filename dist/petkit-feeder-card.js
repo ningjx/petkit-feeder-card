@@ -489,11 +489,6 @@ function e(e,t,i,s){var n,a=arguments.length,o=a<3?t:null===s?s=Object.getOwnPro
     width: 16px;
     height: 16px;
     flex-shrink: 0;
-    transition: transform 0.2s ease;
-  }
-  
-  .status-icon:hover {
-    transform: scale(1.1);
   }
   
   .status-icon.done {
