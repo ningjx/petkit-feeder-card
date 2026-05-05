@@ -504,11 +504,11 @@ export class PetkitFeederCard extends LitElement {
       clearTimeout(this._saveDebounceTimer);
     }
 
-    console.log('[PetkitFeeder] 删除计划，启动防抖保存 (2000ms)');
+    console.log('[PetkitFeeder] 删除计划，启动防抖保存 (5000ms)');
     this._saveDebounceTimer = window.setTimeout(() => {
       this._saveDebounceTimer = null;
       this._triggerSave();
-    }, 2000);
+    }, 5000);
   }
 
   private _handleAddPlan(): void {
