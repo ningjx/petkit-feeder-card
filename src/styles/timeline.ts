@@ -86,11 +86,6 @@ export const timelineStyles = css`
     width: 16px;
     height: 16px;
     flex-shrink: 0;
-    transition: transform 0.2s ease;
-  }
-  
-  .status-icon:hover {
-    transform: scale(1.1);
   }
   
   .status-icon.done {
