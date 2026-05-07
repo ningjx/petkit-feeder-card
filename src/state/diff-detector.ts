@@ -1,13 +1,6 @@
 /** 差异检测器 */
 
-import { TimelineItem } from '../types';
-
-/** 时间线差异 */
-export interface TimelineDiff {
-  added: TimelineItem[];
-  modified: TimelineItem[];
-  deleted: string[];  // itemId 列表
-}
+import { TimelineItem, TimelineDiff } from '../types';
 
 /**
  * 检测两条时间线的差异
@@ -74,25 +67,4 @@ function hasItemChanged(origin: TimelineItem, cache: TimelineItem): boolean {
     origin.plannedAmount !== cache.plannedAmount ||
     origin.isEnabled !== cache.isEnabled
   );
-}
-
-/**
- * 比较两个时间线是否完全相同
- */
-export function isTimelineEqual(
-  origin: TimelineItem[],
-  cache: TimelineItem[]
-): boolean {
-  if (origin.length !== cache.length) return false;
-
-  const originSorted = [...origin].sort((a, b) => a.itemId.localeCompare(b.itemId));
-  const cacheSorted = [...cache].sort((a, b) => a.itemId.localeCompare(b.itemId));
-
-  for (let i = 0; i < originSorted.length; i++) {
-    if (hasItemChanged(originSorted[i], cacheSorted[i])) {
-      return false;
-    }
-  }
-
-  return true;
 }

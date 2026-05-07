@@ -16,42 +16,15 @@ export class WeeklyCacheManager {
     return this._originData;
   }
 
-  /** 获取缓存数据 */
-  get cacheData(): WeeklyViewData | null {
-    return this._cacheData;
-  }
-
   /** 初始化原始数据 */
   initOrigin(data: WeeklyViewData): void {
     this._originData = this._deepClone(data);
     this._cacheData = this._deepClone(data);
   }
 
-  /** 深拷贝到缓存 */
-  cloneToCache(): void {
-    if (this._originData) {
-      this._cacheData = this._deepClone(this._originData);
-    }
-  }
-
-  /** 更新某天的时间线缓存 */
-  updateDayTimeline(day: number, timeline: TimelineItem[]): void {
-    if (!this._cacheData) return;
-    
-    const dayData = this._cacheData.days.get(day);
-    if (dayData) {
-      dayData.timeline = this._deepCloneTimeline(timeline);
-    }
-  }
-
   /** 获取某天的缓存数据 */
   getDayCache(day: number): DayData | null {
     return this._cacheData?.days.get(day) || null;
-  }
-
-  /** 获取某天的原始数据 */
-  getDayOrigin(day: number): DayData | null {
-    return this._originData?.days.get(day) || null;
   }
 
   /** 回滚到原始数据 */
@@ -99,17 +72,6 @@ export class WeeklyCacheManager {
     }
 
     return changedDays;
-  }
-
-  /** 检查是否有任何变更 */
-  hasChanges(): boolean {
-    return this.detectChanges().length > 0;
-  }
-
-  /** 清空所有数据 */
-  clear(): void {
-    this._originData = null;
-    this._cacheData = null;
   }
 
   /** 深克隆周数据 */

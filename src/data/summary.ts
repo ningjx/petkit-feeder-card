@@ -2,6 +2,19 @@
 
 import { TimelineItem, TodaySummary } from '../types';
 
+/** 获取空的统计对象 */
+export function getEmptySummary(): TodaySummary {
+  return {
+    planAmount: 0,
+    actualAmount: 0,
+    manualAmount: 0,
+    isOnline: false,
+    totalCount: 0,
+    completedCount: 0,
+    pendingCount: 0,
+  };
+}
+
 /**
  * 从喂食记录传感器中读取指定日期的统计数据
  * @param historyAttrs 喂食历史实体属性

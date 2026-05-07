@@ -4,24 +4,27 @@ import { HomeAssistant } from 'custom-card-helpers';
 import { TimelineItem, ChangedDay } from '../types';
 import { WeeklyCacheManager } from '../state';
 
+/** 服务调用结果 */
+export interface ServiceResult {
+  success: boolean;
+  error?: any;
+}
+
 /**
  * 批量保存喂食计划
  * @param hass Home Assistant 实例
  * @param changedDays 有变更的周天列表
  * @param weeklyCache 缓存管理器
- * @param onSuccess 成功回调
- * @param onError 失败回调
+ * @returns 服务调用结果
  */
 export async function saveFeed(
   hass: HomeAssistant,
   changedDays: ChangedDay[],
-  weeklyCache: WeeklyCacheManager,
-  onSuccess?: () => void,
-  onError?: (error: any) => void
-): Promise<void> {
+  weeklyCache: WeeklyCacheManager
+): Promise<ServiceResult> {
   if (changedDays.length === 0) {
     console.log('[PetkitFeeder] 无变更，跳过保存');
-    return;
+    return { success: true };
   }
 
   console.log('[PetkitFeeder] 批量保存计划:', changedDays);
@@ -37,32 +40,31 @@ export async function saveFeed(
 
     console.log('[PetkitFeeder] 批量保存计划成功');
     weeklyCache.commit();
-    onSuccess?.();
+    return { success: true };
   } catch (error) {
     console.error('[PetkitFeeder] 批量保存计划失败:', error);
     weeklyCache.rollback();
-    onError?.(error);
+    return { success: false, error };
   }
 }
 
 /**
- * 切换计划启用状态
+ * 切换计划启用状态（乐观更新）
  * @param hass Home Assistant 实例
  * @param day 周几 (1-7)
  * @param item 时间线条目
  * @param weeklyCache 缓存管理器
- * @param onSuccess 成功回调
- * @param onError 失败回调
+ * @returns 服务调用结果
  */
 export async function toggleFeedingItem(
   hass: HomeAssistant,
   day: number,
   item: TimelineItem,
-  weeklyCache: WeeklyCacheManager,
-  onSuccess?: () => void,
-  onError?: (error: any) => void
-): Promise<void> {
-  if (item.isExecuted) return;
+  weeklyCache: WeeklyCacheManager
+): Promise<ServiceResult> {
+  if (item.isExecuted) {
+    return { success: false, error: 'Item already executed' };
+  }
 
   const newEnabled = !item.isEnabled;
 
@@ -75,7 +77,6 @@ export async function toggleFeedingItem(
       timelineItem.status = newEnabled ? 0 : 1;
     }
   }
-  onSuccess?.();
 
   try {
     await hass.callService('petkit_feeder', 'toggle_feeding_item', {
@@ -85,9 +86,10 @@ export async function toggleFeedingItem(
     });
     console.log('[PetkitFeeder] 切换状态成功');
     weeklyCache.commit();
+    return { success: true };
   } catch (error) {
     console.error('[PetkitFeeder] 切换状态失败:', error);
     weeklyCache.rollback();
-    onError?.(error);
+    return { success: false, error };
   }
 }

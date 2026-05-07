@@ -2,7 +2,7 @@
 
 import { css } from 'lit';
 
-export const formStyles = css`
+export const FORM_STYLES = css`
   .edit-time, .edit-name, .edit-amount {
     font-size: 14px;
     font-family: inherit;
