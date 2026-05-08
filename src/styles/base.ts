@@ -19,7 +19,7 @@ export const BASE_STYLES = css`
   /* 周天切换栏 */
   .weekday-tabs {
     display: flex;
-    gap: 4px;
+    gap: 2px;
     padding: 4px 0;
     margin-bottom: 4px;
     border-bottom: 1px solid var(--divider-color, #e0e0e0);
@@ -27,8 +27,9 @@ export const BASE_STYLES = css`
 
   .weekday-tab {
     flex: 1;
+    min-width: 0;
     height: 28px;
-    padding: 0 4px;
+    padding: 0 2px;
     border: 2px solid transparent;
     border-radius: 4px;
     background: transparent;
