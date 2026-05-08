@@ -1,11 +1,11 @@
-/** 小佩喂食器卡片 - 入口文件 */
+/** Petkit Feeder Card - Entry file */
 
-// 注册到卡片选择器
+// Register to card selector
 (window as any).customCards = (window as any).customCards || [];
 (window as any).customCards.push({
   type: 'petkit-feeder-card',
-  name: '小佩喂食器',
-  description: '显示小佩喂食器状态、喂食计划和历史记录',
+  name: 'Petkit Feeder Card',
+  description: 'Display Petkit feeder status, feeding schedule and history',
   preview: true,
   documentationURL: 'https://github.com/ningjx/petkit-feeder-card',
 });

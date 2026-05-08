@@ -19,7 +19,7 @@ export function processWeeklyData(
   isOnline: boolean,
   language: string = 'zh'
 ): WeeklyViewData {
-  const weeklyPlans = parseWeeklyPlans(planAttrs, language);
+  const weeklyPlans = parseWeeklyPlans(planAttrs);
   const weekDates = getWeekDates();
   const days = new Map<number, DayData>();
 

@@ -121,7 +121,7 @@ export interface TodaySummary {
 /** 单天数据（周视图中的某一天） */
 export interface DayData {
   day: number;                 // 周几: 1-7
-  weekdayName: string;         // 显示名称: "周一" ~ "周日"
+  weekdayName: string;         // 显示名称，通过 localize('weekday.X') 获取
   suspended: number;           // 暂停状态: 0=启用, 1=暂停
   timeline: TimelineItem[];    // 当天时间线
   summary: TodaySummary;       // 当天统计

@@ -1,28 +1,26 @@
 /** 数据解析模块 */
 
 import { FeedingPlanItem, FeedingRecord } from '../types';
-import { localize } from '../localize';
 
 /**
  * 解析一周喂食计划
  * @param attrs 喂食计划实体属性
- * @param language 语言代码 ('zh' | 'en')
- * @returns Map<周几数字, 喂食计划列表>
+ * @returns Map<day number 1-7, 喂食计划列表>
  */
-export function parseWeeklyPlans(attrs: any, language: string = 'zh'): Map<number, { suspended: number; items: FeedingPlanItem[] }> {
+export function parseWeeklyPlans(attrs: any): Map<number, { suspended: number; items: FeedingPlanItem[] }> {
   const result = new Map<number, { suspended: number; items: FeedingPlanItem[] }>();
   const schedule = attrs.schedule || {};
 
   for (let day = 1; day <= 7; day++) {
-    const weekdayName = localize(`weekday.${day}`, language);
-    const dayData = schedule[weekdayName] || {};
+    // 后端使用数字 (1-7) 作为 schedule key
+    const dayData = schedule[day] || {};
     const items = dayData.items || [];
     const suspended = dayData.suspended ?? 0;
 
     const feedingItems: FeedingPlanItem[] = items.map((item: any, index: number) => ({
       id: `${day}_${index}`,
       itemId: item.id,
-      name: item.name || `${weekdayName}喂食`,
+      name: item.name || `Feeding`,
       time: item.time || '',
       amount: item.amount || 0,
       enabled: suspended !== 1,
@@ -65,7 +63,7 @@ export function parseDayRecords(attrs: any, date: string): FeedingRecord[] {
 }
 
 /**
- * 获取本周日期列表（周一到周日）
+ * 获取本周日期列表（Monday to Sunday）
  */
 export function getWeekDates(): string[] {
   const today = new Date();
