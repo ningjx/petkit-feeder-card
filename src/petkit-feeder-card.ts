@@ -23,6 +23,7 @@ export class PetkitFeederCard extends LitElement {
   private _weeklyCache: WeeklyCacheManager = new WeeklyCacheManager();
   private _editState: EditState = new EditState();
   private _selectedDay: number = 1;
+  private _isOnline: boolean = true;  // 设备在线状态
 
   // 保存相关状态
   private _saveDebounceTimer: number | null = null;
@@ -120,6 +121,7 @@ export class PetkitFeederCard extends LitElement {
     const connectivityEntityId = getConnectivityEntityId(this._config);
     const connectivityEntity = this.hass.states[connectivityEntityId];
     const isOnline = connectivityEntity?.state === 'on';
+    this._isOnline = isOnline;  // 存储到组件属性
 
     // 处理一周数据
     const language = getLanguage(this.hass);
@@ -165,9 +167,10 @@ export class PetkitFeederCard extends LitElement {
               ${REFRESH_ICON}
             </button>
             <button
-              class="icon-btn feed-btn"
-              @click=${this._handleManualFeed}
-              title="${this._localize('button.manual_feed')}"
+              class="icon-btn feed-btn ${!isOnline ? 'disabled' : ''}"
+              @click=${isOnline ? this._handleManualFeed : undefined}
+              title="${isOnline ? this._localize('button.manual_feed') : this._localize('status.offline')}"
+              ?disabled=${!isOnline}
             >
               ${FEED_ICON}
             </button>
@@ -175,8 +178,8 @@ export class PetkitFeederCard extends LitElement {
         </div>
 
         ${this._renderWeekdayTabs()}
-        ${this._config.show_timeline ? this._renderTimeline(timeline) : ''}
-        ${this._config.show_timeline ? this._renderAddPlanButton() : ''}
+        ${this._config.show_timeline ? this._renderTimeline(timeline, this._isOnline) : ''}
+        ${this._config.show_timeline ? this._renderAddPlanButton(this._isOnline) : ''}
         ${this._config.show_summary ? this._renderSummary(summary) : ''}
       </ha-card>
     `;
@@ -207,7 +210,7 @@ export class PetkitFeederCard extends LitElement {
     }
   }
 
-  private _renderTimeline(timeline: TimelineItem[]) {
+  private _renderTimeline(timeline: TimelineItem[], isOnline: boolean) {
     if (!timeline.length) {
       return html`
         <div class="section">
@@ -222,22 +225,22 @@ export class PetkitFeederCard extends LitElement {
     return html`
       <div class="section">
         <div class="timeline-list">
-          ${timeline.map(item => this._renderTimelineItem(item))}
+          ${timeline.map(item => this._renderTimelineItem(item, isOnline))}
         </div>
       </div>
     `;
   }
 
   /** 判断计划项是否已过期 */
-  private _renderTimelineItem(item: TimelineItem) {
+  private _renderTimelineItem(item: TimelineItem, isOnline: boolean) {
     const editingItem = this._editState.editingItem;
     const editField = editingItem?.itemId === item.itemId ? editingItem?.field : null;
     const isExpired = isItemExpired(item, this._selectedDay);
 
-    // 权限判断
-    const canToggle = item.itemType === 'plan' && item.canDisable && !isExpired;
-    const canDeleteBtn = item.itemType === 'plan' && item.canDelete;
-    const canEdit = item.itemType === 'plan';
+    // 权限判断（离线时禁止所有操作）
+    const canToggle = isOnline && item.itemType === 'plan' && item.canDisable && !isExpired;
+    const canDeleteBtn = isOnline && item.itemType === 'plan' && item.canDelete;
+    const canEdit = isOnline && item.itemType === 'plan';
 
     // 编辑输入框
     const timeEl = editField === 'time' && editingItem
@@ -317,10 +320,15 @@ export class PetkitFeederCard extends LitElement {
     `;
   }
 
-  private _renderAddPlanButton() {
+  private _renderAddPlanButton(isOnline: boolean) {
     return html`
       <div class="timeline-list-footer">
-        <button class="add-plan-btn" @click=${this._handleAddPlan} title="${this._localize('button.add_plan')}">
+        <button
+          class="add-plan-btn ${!isOnline ? 'disabled' : ''}"
+          @click=${isOnline ? this._handleAddPlan : undefined}
+          title="${isOnline ? this._localize('button.add_plan') : this._localize('status.offline')}"
+          ?disabled=${!isOnline}
+        >
           <span class="add-plus"></span>
         </button>
       </div>
@@ -355,6 +363,7 @@ export class PetkitFeederCard extends LitElement {
    * ============================================================================ */
   private async _handleManualFeed(): Promise<void> {
     if (!this.hass) return;
+    if (!this._isOnline) return;  // 离线时禁止
     const feedEntity = findManualFeedEntity(this.hass);
     if (feedEntity) {
       await pressButton(this.hass, feedEntity, '手动喂食');
@@ -371,6 +380,7 @@ export class PetkitFeederCard extends LitElement {
 
   private async _handleToggle(item: TimelineItem): Promise<void> {
     if (!this.hass || !this._config) return;
+    if (!this._isOnline) return;  // 离线时禁止
     if (item.isExecuted) return;
     if (this._togglingItemIds.has(item.itemId)) return;  // 防止重复点击同一项
 
@@ -397,6 +407,7 @@ export class PetkitFeederCard extends LitElement {
 
   private _handleDelete(item: TimelineItem): void {
     if (!this.hass || !this._config) return;
+    if (!this._isOnline) return;  // 离线时禁止
 
     // 从缓存中移除该项
     const dayCache = this._weeklyCache.getDayCache(this._selectedDay);
@@ -423,6 +434,7 @@ export class PetkitFeederCard extends LitElement {
 
   private _handleAddPlan(): void {
     if (!this.hass || !this._config) return;
+    if (!this._isOnline) return;  // 离线时禁止
 
     // 清除之前的防抖保存，确保新增不触发保存
     this._clearSaveTimer();
@@ -472,6 +484,8 @@ export class PetkitFeederCard extends LitElement {
    * 编辑状态管理方法
    * ============================================================================ */
   private _startEdit(item: TimelineItem, field: 'time' | 'name' | 'amount'): void {
+    if (!this._isOnline) return;  // 离线时禁止编辑
+
     // 取消之前的防抖保存
     this._clearSaveTimer();
 

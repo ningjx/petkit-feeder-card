@@ -143,6 +143,19 @@ export const COMPONENT_STYLES = css`
     outline-offset: 0px;
   }
 
+  .icon-btn.disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  .icon-btn.disabled:hover {
+    transform: none;
+  }
+
+  .icon-btn.disabled:hover::before {
+    opacity: 0;
+  }
+
   .btn-svg {
     width: 18px;
     height: 18px;
@@ -218,6 +231,16 @@ export const COMPONENT_STYLES = css`
 
   .add-plan-btn:active {
     transform: scale(0.98);
+  }
+
+  .add-plan-btn.disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  .add-plan-btn.disabled:hover {
+    transform: none;
+    background: transparent;
   }
 
   .add-plus {
