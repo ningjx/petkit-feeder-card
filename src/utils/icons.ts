@@ -36,3 +36,17 @@ export const DELETE_ICON = svg`
     <line x1="35" y1="50" x2="65" y2="50" stroke="#ff0000" stroke-width="15" stroke-linecap="round"/>
   </svg>
 `;
+
+/** 加载转圈图标（用于 toggle 开关） */
+export const SPINNER_ICON = svg`
+  <svg viewBox="0 0 24 24" class="spinner-svg">
+    <defs>
+      <linearGradient id="spinner-gradient" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="100" y2="0">
+        <stop offset="0%" stop-color="currentColor" stop-opacity="1"/>
+        <stop offset="40%" stop-color="currentColor" stop-opacity="1"/>
+        <stop offset="100%" stop-color="currentColor" stop-opacity="0.1"/>
+      </linearGradient>
+    </defs>
+    <circle cx="12" cy="12" r="10" fill="none" stroke="url(#spinner-gradient)" stroke-width="3.5" stroke-dasharray="20 40" stroke-linecap="round"/>
+  </svg>
+`;

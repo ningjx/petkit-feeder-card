@@ -370,6 +370,37 @@ export const COMPONENT_STYLES = css`
     transform: translateX(0px);
   }
 
+  /* Toggle 加载状态 */
+  .toggle-switch.loading {
+    pointer-events: none;  /* 加载中禁止点击 */
+  }
+
+  .toggle-switch.loading .toggle-thumb {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* spinner 颜色跟随开关状态 */
+  .toggle-switch.loading.on .spinner-svg {
+    color: var(--primary-color, #03a9f4);
+  }
+
+  .toggle-switch.loading.off .spinner-svg {
+    color: var(--disabled-color, #bdbdbd);
+  }
+
+  .spinner-svg {
+    width: 8px;
+    height: 8px;
+    animation: spin 0.8s linear infinite;
+  }
+
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
   /* 统计行 */
   .summary-row {
     display: grid;

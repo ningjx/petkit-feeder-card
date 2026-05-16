@@ -4,7 +4,7 @@ import { LitElement, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { HomeAssistant } from 'custom-card-helpers';
 import { PetkitSoloCardConfig, TimelineItem, TodaySummary } from './types';
-import { getEntityId, getTodayWeekdayNumber, getConnectivityEntityId, findManualFeedEntity, findRefreshEntity, isEditInput, REFRESH_ICON, FEED_ICON, STATUS_ICON, DELETE_ICON, isItemExpired, getToggleTitle, getDateDisplay } from './utils';
+import { getEntityId, getTodayWeekdayNumber, getConnectivityEntityId, findManualFeedEntity, findRefreshEntity, isEditInput, REFRESH_ICON, FEED_ICON, STATUS_ICON, DELETE_ICON, SPINNER_ICON, isItemExpired, getToggleTitle, getDateDisplay } from './utils';
 import { processWeeklyData, getEmptySummary } from './data';
 import { combineStyles } from './styles';
 import { saveFeed, toggleFeedingItem, pressButton } from './services';
@@ -31,7 +31,9 @@ export class PetkitFeederCard extends LitElement {
   // 编辑相关状态
   private _pendingFocus: { itemId: string; field: 'time' | 'name' | 'amount' } | null = null;
   private _isInEditMode: boolean = false;  // 标记正在添加/编辑（用于阻止 focusout 保存）
-  private _isTogglingItem: boolean = false;   // 标记正在切换状态（用于阻止 focusout 保存）
+
+  // Toggle 加载状态（支持并行操作多个开关）
+  private _togglingItemIds: Set<string> = new Set();  // 正在切换的 item ID 集合
 
   private _getEntityId(entityType: string): string {
     if (!this._config) return '';
@@ -291,11 +293,13 @@ export class PetkitFeederCard extends LitElement {
             ${this._config?.show_actions
               ? html`
                   <div
-                    class="toggle-switch ${item.isEnabled ? 'on' : 'off'} ${!canToggle ? 'disabled' : ''}"
-                    @click=${canToggle ? () => this._handleToggle(item) : undefined}
+                    class="toggle-switch ${item.isEnabled ? 'on' : 'off'} ${!canToggle ? 'disabled' : ''} ${this._togglingItemIds.has(item.itemId) ? 'loading' : ''}"
+                    @click=${canToggle && !this._togglingItemIds.has(item.itemId) ? () => this._handleToggle(item) : undefined}
                     title="${getToggleTitle(item, isExpired, this._localize.bind(this))}"
                   >
-                    <div class="toggle-thumb"></div>
+                    <div class="toggle-thumb">
+                      ${this._togglingItemIds.has(item.itemId) ? SPINNER_ICON : ''}
+                    </div>
                   </div>
                   <button
                     class="icon-delete-btn ${!canDeleteBtn ? 'disabled' : ''}"
@@ -368,10 +372,13 @@ export class PetkitFeederCard extends LitElement {
   private async _handleToggle(item: TimelineItem): Promise<void> {
     if (!this.hass || !this._config) return;
     if (item.isExecuted) return;
+    if (this._togglingItemIds.has(item.itemId)) return;  // 防止重复点击同一项
 
-    // 标记正在切换，防止 focusout 触发保存
-    this._isTogglingItem = true;
+    // 1. 设置 loading 状态，立即刷新 UI 显示 spinner
+    this._togglingItemIds.add(item.itemId);
+    this.requestUpdate();  // 立即刷新，显示 spinner + 执行动画
 
+    // 2. 调用后台服务（乐观更新已在 toggleFeedingItem 中实现）
     const result = await toggleFeedingItem(
       this.hass,
       this._selectedDay,
@@ -379,7 +386,8 @@ export class PetkitFeederCard extends LitElement {
       this._weeklyCache
     );
 
-    this._isTogglingItem = false;
+    // 3. 清除 loading 状态
+    this._togglingItemIds.delete(item.itemId);
 
     if (!result.success) {
       console.error('[PetkitFeeder] 切换失败:', result.error);
@@ -534,7 +542,7 @@ export class PetkitFeederCard extends LitElement {
 
   private _handleCardFocusOut(e: FocusEvent): void {
     // 如果正在添加新计划或切换状态，忽略 focusout 事件
-    if (this._isInEditMode || this._isTogglingItem) {
+    if (this._isInEditMode || this._togglingItemIds.size > 0) {
       return;
     }
 
