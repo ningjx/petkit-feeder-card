@@ -4,7 +4,7 @@ import { LitElement, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { HomeAssistant } from 'custom-card-helpers';
 import { PetkitSoloCardConfig, TimelineItem, TodaySummary } from './types';
-import { getEntityId, getTodayWeekdayNumber, getConnectivityEntityId, findManualFeedEntity, findRefreshEntity, isEditInput, REFRESH_ICON, FEED_ICON, STATUS_ICON, DELETE_ICON, SPINNER_ICON, isItemExpired, getToggleTitle, getDateDisplay } from './utils';
+import { getEntityId, getTodayWeekdayNumber, getConnectivityEntityId, findManualFeedEntity, findRefreshEntity, isEditInput, REFRESH_ICON, FEED_ICON, STATUS_ICON, DELETE_ICON, SPINNER_ICON, SYNC_ICON, isItemExpired, getToggleTitle, getDateDisplay } from './utils';
 import { processWeeklyData, getEmptySummary } from './data';
 import { combineStyles } from './styles';
 import { saveFeed, toggleFeedingItem, pressButton } from './services';
@@ -159,6 +159,14 @@ export class PetkitFeederCard extends LitElement {
           <span class="header-title">${deviceName}</span>
           <span class="header-date">${getDateDisplay(this._selectedDay, this._localize.bind(this))}</span>
           <div class="header-actions">
+            <button
+              class="icon-btn sync-btn ${!isOnline ? 'disabled' : ''}"
+              @click=${isOnline ? this._handleSync : undefined}
+              title="${isOnline ? this._localize('button.sync') : this._localize('status.offline')}"
+              ?disabled=${!isOnline}
+            >
+              ${SYNC_ICON}
+            </button>
             <button
               class="icon-btn refresh-btn"
               @click=${this._handleRefresh}
@@ -375,6 +383,76 @@ export class PetkitFeederCard extends LitElement {
     const refreshEntity = findRefreshEntity(this.hass, this._config.refresh_entity);
     if (refreshEntity) {
       await pressButton(this.hass, refreshEntity, '刷新');
+    }
+  }
+
+  private async _handleSync(): Promise<void> {
+    if (!this.hass || !this._config) return;
+    if (!this._isOnline) return;
+
+    // 1. 确认对话框（防止误操作）
+    const confirmed = window.confirm(
+      this._localize('confirm.sync_plan', { day: this._localize(`weekday.${this._selectedDay}`) })
+    );
+    if (!confirmed) return;
+
+    // 2. 获取当前选中周天的计划数据
+    const currentDayData = this._weeklyCache.getDayCache(this._selectedDay);
+    if (!currentDayData) return;
+
+    // 3. 提取计划项（仅 itemType === 'plan'）
+    const planItems = currentDayData.timeline
+      .filter(item => item.itemType === 'plan')
+      .map(item => ({
+        time: item.time,
+        amount: item.plannedAmount,
+        name: item.name,
+        enabled: item.isEnabled,
+      }));
+
+    if (planItems.length === 0) {
+      window.alert(this._localize('error.no_plan_to_sync'));
+      return;
+    }
+
+    // 4. 构建所有 7 天的数据（全部使用当前周天的计划）
+    for (let day = 1; day <= 7; day++) {
+      const dayCache = this._weeklyCache.getDayCache(day);
+      if (dayCache) {
+        // 复制当前周天的计划项到其他天
+        dayCache.timeline = currentDayData.timeline
+          .filter(item => item.itemType === 'plan')
+          .map(item => ({
+            ...item,
+            itemId: item.itemId.startsWith('new_')
+              ? `new_${day}_${Date.now()}_${item.time.replace(':', '')}`
+              : `s${day}${item.itemId.replace(/^s\d+/, '')}`,
+          }));
+      }
+    }
+    this.requestUpdate();
+
+    // 5. 调用保存服务
+    const weeklyPlan: Array<{ day: number; suspended: number; items: Array<{ time: string; amount: number; name: string; enabled: boolean }> }> = [];
+    for (let day = 1; day <= 7; day++) {
+      weeklyPlan.push({
+        day,
+        suspended: 0,
+        items: planItems,
+      });
+    }
+
+    try {
+      await this.hass.callService('petkit_feeder', 'save_feed', {
+        weekly_plan: weeklyPlan,
+      });
+      this._weeklyCache.commit();
+      console.log('[PetkitFeeder] 同步计划成功');
+    } catch (error) {
+      console.error('[PetkitFeeder] 同步计划失败:', error);
+      this._weeklyCache.rollback();
+      this.requestUpdate();
+      window.alert(this._localize('error.sync_failed'));
     }
   }
 

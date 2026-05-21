@@ -8,6 +8,12 @@
   "button.manual_feed": "Manual Feed",
   "button.add_plan": "Add Plan",
   "button.delete_plan": "Delete Plan",
+  "button.sync": "Sync Plan",
+
+  "confirm.sync_plan": "Are you sure you want to sync all 7 days' plans to {day}'s plan? This will overwrite plans on other days.",
+
+  "error.no_plan_to_sync": "No plan to sync",
+  "error.sync_failed": "Sync failed, please try again later",
   
   "status.online": "Online",
   "status.offline": "Offline",

@@ -103,4 +103,9 @@ export const BASE_STYLES = css`
     margin-left: auto;
     z-index: 3;
   }
+
+  /* 同步按钮与刷新按钮之间的间距 */
+  .sync-btn {
+    margin-right: -5px;  /* 调整与刷新按钮的间距为 1px (6px gap - 5px = 1px) */
+  }
 `;
