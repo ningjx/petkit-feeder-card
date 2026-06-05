@@ -410,11 +410,6 @@ export class PetkitFeederCard extends LitElement {
         enabled: item.isEnabled,
       }));
 
-    if (planItems.length === 0) {
-      window.alert(this._localize('error.no_plan_to_sync'));
-      return;
-    }
-
     // 4. 构建所有 7 天的数据（全部使用当前周天的计划）
     for (let day = 1; day <= 7; day++) {
       const dayCache = this._weeklyCache.getDayCache(day);

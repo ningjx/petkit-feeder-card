@@ -10,9 +10,8 @@
   "button.delete_plan": "删除计划",
   "button.sync": "同步计划",
 
-  "confirm.sync_plan": "确定将一周七天的计划都同步为 {day} 的计划吗？此操作将覆盖其他天的计划。",
+  "confirm.sync_plan": "确定将一周七天的计划都同步为 {day} 的计划吗？如果 {day} 没有计划，将清除所有天的喂食计划。此操作将覆盖其他天的计划。",
 
-  "error.no_plan_to_sync": "当前没有计划可同步",
   "error.sync_failed": "同步计划失败，请稍后重试",
   
   "status.online": "在线",
